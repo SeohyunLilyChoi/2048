@@ -1,37 +1,26 @@
-import { useState } from 'react';
-import styled from 'styled-components';
+// src/components/Grid.tsx
 
-import Tile from './Tile.tsx';
-import getInitialGrid from './UtilTiles.tsx';
+import React from 'react';
 
-const GridSize = 4;
+import type { Cell } from './hooks/use2048Game';
+import CellComponent from './Tile';
 
-const Board = styled.div`
-  display: grid;
-  grid-template-rows: repeat(4, 20vmin);
-  grid-template-columns: repeat(4, 20vmin);
-  gap: 2vmin;
-  border-radius: 1vmin;
-  padding: 2vmin;
-  position: relative;
-`;
-
-const Cell = styled.div`
-  background-color: lightgray;
-  border-radius: 1vmin;
-`;
-
-export default function Grid() {
-  const [tileList] = useState(getInitialGrid);
-
-  return (
-    <Board>
-      {new Array(GridSize * GridSize).fill(0).map((_, i) => (
-        <Cell key={i} />
-      ))}
-      {tileList.map((item) => (
-        <Tile key={item.id} {...item} />
-      ))}
-    </Board>
-  );
+interface GridProps {
+  grid: Cell[][];
 }
+
+const Grid: React.FC<GridProps> = ({ grid }) => {
+  return (
+    <div className="grid">
+      {grid.map((row, i) => (
+        <div key={i} className="row">
+          {row.map((cell, j) => (
+            <CellComponent key={j} value={cell} />
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default Grid;
